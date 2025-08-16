@@ -1,3 +1,5 @@
+const resultsDiv = document.querySelector("#results");
+const scoreDiv = document.querySelector("#score");
 function getComputerChoice() {
     const n = Math.floor(Math.random() * 9);
     if (n <= 2) {
@@ -13,33 +15,49 @@ function getHumanChoice() {
     return choice;
 }
 
-function playGame() {
     let humanScore = 0;
     let computerScore = 0;
 
     function playRound(HumanChoice, ComputerChoice) {
         let hc = String(HumanChoice).toLowerCase();
         let cc = String(ComputerChoice).toLowerCase();
-
         if (hc === cc) {
-            console.log("It is a Draw!!");
+            resultsDiv.textContent = "It is a Draw!!";
         } else if ((hc === "rock" && cc === "paper") ||
                    (hc === "paper" && cc === "scissor") ||
                    (hc === "scissor" && cc === "rock")) {
-            console.log(`You Lose! ${ComputerChoice} beats ${HumanChoice}`);
+            resultsDiv.textContent = `You Lose! ${ComputerChoice} beats ${HumanChoice}`;
             computerScore++;
         } else {
-            console.log(`You Win! ${HumanChoice} beats ${ComputerChoice}`);
+            resultsDiv.textContent = `You Win! ${HumanChoice} beats ${ComputerChoice}`;
             humanScore++;
+        }
+        scoreDiv.textContent = `Human ${humanScore} - Computer ${computerScore}`;
+        if (humanScore == 5) {
+            resultsDiv.textContent = "You Win the Game!";
+            button1.disabled = true;
+    button2.disabled = true;
+    button3.disabled = true;
+            return;
+        } else if (computerScore == 5) {
+            resultsDiv.textContent = "Computer Wins the Game!";
+            button1.disabled = true;
+    button2.disabled = true;
+    button3.disabled = true;
+            return;
         }
     }
 
-    for (let i = 0; i < 5; i++) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-    }
 
-    console.log(`Final Score: Human ${humanScore} - Computer ${computerScore}`);
-}
-console.log(playGame());
+let button1 = document.querySelector("#rockBtn");
+button1.addEventListener("click", function () {
+    playRound("rock", getComputerChoice());
+});
+let button2 = document.querySelector("#paperBtn");
+button2.addEventListener("click", function () {
+    playRound("paper", getComputerChoice());
+});
+let button3 = document.querySelector("#scissorBtn");
+button3.addEventListener("click", function () {
+    playRound("scissor", getComputerChoice());
+});
